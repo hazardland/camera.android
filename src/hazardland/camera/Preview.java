@@ -1,11 +1,10 @@
 package hazardland.camera;
 
-import java.io.IOException;
-
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.content.Context;
 import android.hardware.Camera;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.widget.Toast;
 
 public class Preview  extends SurfaceView implements SurfaceHolder.Callback 
 {
@@ -25,14 +24,15 @@ public class Preview  extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) 
 	{
+	    Main.lock = true;
 		// TODO Auto-generated method stub
         // If your preview can change or rotate, take care of those events here.
         // Make sure to stop the preview before resizing or reformatting it.
 
         if (view.getSurface()==null)
         {
-          // preview surface does not exist
-          return;
+            alert ("no preview surface");
+            return;
         }
 
         // stop preview before making changes
@@ -43,9 +43,12 @@ public class Preview  extends SurfaceView implements SurfaceHolder.Callback
         } 
         catch (Exception e)
         {
-          // ignore: tried to stop a non-existent preview
+            alert ("no preview to stop");
         }
 		
+/*        Camera.Parameters config = camera.getParameters();
+        config.setPreviewSize(1600, 1200);
+        camera.setParameters(config);*/
        
         // set preview size and make any resize, rotate or
         // reformatting changes here
@@ -59,27 +62,29 @@ public class Preview  extends SurfaceView implements SurfaceHolder.Callback
         } 
         catch (Exception e)
         {
-            debug ("Error starting camera preview: " + e.getMessage());
+            alert ("Error starting camera preview: " + e.getMessage());
         }
+        Main.lock = false;
+        info();        
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) 
 	{
         // The Surface has been created, now tell the camera where to draw the preview.
-        try 
-        {
-            camera.setPreviewDisplay (holder);
-            camera.startPreview();
-        } 
-        catch (IOException e) 
-        {
-            debug ("Error setting camera preview: " + e.getMessage());
-        }
-        catch (Exception e) 
-        {
-			debug ("Unknown error " + e.getMessage());
-		}
+//        try 
+//        {
+//            camera.setPreviewDisplay (holder);
+//            camera.startPreview();
+//        } 
+//        catch (IOException e) 
+//        {
+//            debug ("Error setting camera preview: " + e.getMessage());
+//        }
+//        catch (Exception e) 
+//        {
+//			debug ("Unknown error " + e.getMessage());
+//		}
 		
 	}
 
@@ -95,4 +100,21 @@ public class Preview  extends SurfaceView implements SurfaceHolder.Callback
 		System.out.println ("Preview: " + message);
 	}	
 
+    public void alert (String message)
+    {
+        Toast.makeText (getContext(), message, Toast.LENGTH_LONG).show();
+    }
+    
+    public void info ()
+    {
+        Camera.Parameters config = camera.getParameters();        
+        alert (config.getPictureSize().width+"x"+config.getPictureSize().height
+                +" -> "+
+                config.getPreviewSize().width+"x"+config.getPreviewSize().height
+                +" "
+                +"JPEG "+config.getJpegQuality()+"%"
+                +" "
+                +"FLASH "+config.getFlashMode());        
+    }
+	
 }

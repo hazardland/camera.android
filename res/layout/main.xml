@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-  <FrameLayout
-    android:id="@+id/preview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_weight="1"
-    />
-</LinearLayout>
+    android:layout_height="fill_parent" >
+
+    <FrameLayout
+        android:id="@+id/preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+    </FrameLayout>
+
+    <LinearLayout
+         android:id="@+id/popup"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent" 
+         android:orientation="horizontal"
+         android:visibility="invisible"
+         android:clickable="false"
+         android:background="#000">
+
+
+
+     </LinearLayout>
+
+    
+</RelativeLayout>
