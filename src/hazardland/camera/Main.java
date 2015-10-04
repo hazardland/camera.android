@@ -194,12 +194,12 @@ public class Main extends Activity implements Camera.AutoFocusCallback
         }
         else if (keyCode==KeyEvent.KEYCODE_VOLUME_UP)
         {
-            alert ("vol up");
+            //alert ("vol up");
             return true;
         }
         else if (keyCode==KeyEvent.KEYCODE_VOLUME_DOWN)
         {
-            alert ("vol down");
+            //alert ("vol down");
             return true;
         }
         return super.onKeyDown(keyCode, event); 
